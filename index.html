@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#1e5799">
   <title>Kalkulator Paliwa</title>
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="apple-touch-icon" href="icon-512.png">
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -15,10 +17,13 @@
     <header class="title-bar">
       <div class="title-left">
         <span class="app-icon">⛽</span>
-        <span class="app-title">Kalkulator Paliwa v1.0</span>
+        <span class="app-title">Kalkulator Paliwa</span>
       </div>
-      <div class="title-right" id="vehicle-switcher-box" style="display:none;">
-        <select id="active-vehicle-select" class="win-select-sm" title="Wybierz pojazd"></select>
+      <div class="title-right">
+        <div class="vehicle-pill">
+          <select id="active-vehicle-select" class="win-select-pill" title="Wybierz pojazd"></select>
+          <button type="button" id="btn-rename-active-vehicle" class="icon-pill-btn" title="Zmień nazwę pojazdu">✏️</button>
+        </div>
       </div>
     </header>
 
@@ -49,7 +54,10 @@
       <section id="tab-home" class="tab-content active">
         
         <fieldset class="win-groupbox">
-          <legend>Podsumowanie spalania (<span id="home-vehicle-name">Pojazd</span>)</legend>
+          <legend>
+            Podsumowanie: <span id="home-vehicle-name">Pojazd</span>
+            <button type="button" class="inline-edit-btn" id="btn-inline-rename" title="Zmień nazwę auta">✏️</button>
+          </legend>
           <div class="kpi-grid">
             <div class="kpi-box">
               <div class="kpi-label">Ostatnie spalanie</div>
@@ -68,8 +76,19 @@
             <div><strong>Koszt 100 km (EUR):</strong> <span id="kpi-cost-eur">--</span></div>
           </div>
 
-          <div id="service-alert-bar" class="service-bar" style="display:none;">
+          <!-- Pasek wymiany oleju -->
+          <div id="service-alert-bar" class="alert-pill" style="display:none;">
             🔧 <span id="service-alert-text">Do wymiany oleju: 0 km</span>
+          </div>
+
+          <!-- Dwa paski obok siebie: Przegląd techniczny (TÜV) oraz Podatek Kfz-Steuer -->
+          <div id="dates-alert-grid" class="dates-alert-grid" style="display:none;">
+            <div id="tuv-alert-box" class="alert-pill alert-info" style="display:none;">
+              📅 <span id="tuv-alert-text">Przegląd: --</span>
+            </div>
+            <div id="tax-alert-box" class="alert-pill alert-info" style="display:none;">
+              💶 <span id="tax-alert-text">Kfz-Steuer: --</span>
+            </div>
           </div>
         </fieldset>
 
@@ -260,22 +279,31 @@
           <legend>Zarządzanie pojazdami</legend>
           <div id="vehicles-list" class="vehicles-list"></div>
           <div class="add-vehicle-row">
-            <input type="text" id="new-vehicle-name" class="win-input" placeholder="Nazwa nowego auta (np. VW T-Roc)">
+            <input type="text" id="new-vehicle-name" class="win-input" placeholder="Nazwa kolejnego auta (np. VW T-Roc)">
             <button type="button" class="win-btn" id="btn-add-vehicle">+ Dodaj</button>
           </div>
         </fieldset>
 
         <fieldset class="win-groupbox">
-          <legend>Serwis i wymiana oleju (<span id="srv-veh-name">Pojazd</span>)</legend>
+          <legend>Serwis, Przegląd i Kfz-Steuer (<span id="srv-veh-name">Pojazd</span>)</legend>
+          
+          <div class="form-row">
+            <label for="inp-service-odo">🔧 Następna wymiana oleju / serwis przy (km):</label>
+            <input type="number" id="inp-service-odo" class="win-input" placeholder="np. 155000">
+          </div>
+
           <div class="form-row two-cols">
             <div>
-              <label for="inp-service-odo">Następny serwis przy (km):</label>
-              <input type="number" id="inp-service-odo" class="win-input" placeholder="np. 155000">
+              <label for="inp-tuv-date">📅 Przegląd techniczny (TÜV/HU):</label>
+              <input type="date" id="inp-tuv-date" class="win-input">
             </div>
-            <div style="display:flex; align-items:flex-end;">
-              <button type="button" class="win-btn" id="btn-save-service" style="width:100%;">Ustaw licznik</button>
+            <div>
+              <label for="inp-tax-date">💶 Podatek Kfz-Steuer (DE):</label>
+              <input type="date" id="inp-tax-date" class="win-input">
             </div>
           </div>
+
+          <button type="button" class="win-btn-primary" id="btn-save-service" style="width:100%;">💾 Zapisz terminy dla tego auta</button>
         </fieldset>
 
         <fieldset class="win-groupbox">
@@ -319,6 +347,23 @@
       <span id="status-text">Gotowy | Baza lokalna OK</span>
       <span id="status-odo">ODO: 0 km</span>
     </footer>
+  </div>
+
+  <!-- OKNO MODALNE ZMIANY NAZWY POJAZDU (DLA PIERWSZEGO URUCHOMIENIA I EDYCJI) -->
+  <div id="rename-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-window">
+      <div class="title-bar modal-title">
+        <span>🚗 Nazwa Twojego pojazdu</span>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom:8px; font-size:13px;">Wpisz markę i model samochodu (możesz to zmienić w dowolnej chwili):</p>
+        <input type="text" id="modal-vehicle-input" class="win-input" placeholder="np. VW T-Roc 1.5 TSI">
+        <div class="form-actions" style="margin-top:12px;">
+          <button type="button" class="win-btn-primary" id="btn-modal-save">Zapisz nazwę</button>
+          <button type="button" class="win-btn" id="btn-modal-cancel">Pomiń</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="app.js"></script>

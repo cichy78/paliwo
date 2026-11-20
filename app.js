@@ -1,14 +1,15 @@
-const STORAGE_KEY = 'fuel_calc_win_db_v1';
+const STORAGE_KEY = 'fuel_calc_win_db_v2';
 
 let appData = {
   settings: {
     theme: 'theme-vista',
     defaultMode: 'ODO',
     defaultCurrency: 'PLN',
-    activeVehicleId: 'v1'
+    activeVehicleId: 'v1',
+    firstLaunchPrompted: false
   },
   vehicles: [
-    { id: 'v1', name: 'Mój Samochód', serviceOdo: 0 }
+    { id: 'v1', name: 'Mój Samochód', serviceOdo: 0, tuvDate: '', taxDate: '' }
   ],
   entries: []
 };
@@ -16,6 +17,7 @@ let appData = {
 let currentInputMode = 'ODO';
 let currentCurrency = 'PLN';
 let currentStatsPeriod = 'ALL';
+let renamingVehicleId = null;
 
 // ================= INICJALIZACJA =================
 document.addEventListener('DOMContentLoaded', () => {
@@ -25,18 +27,39 @@ document.addEventListener('DOMContentLoaded', () => {
   setupFormLogic();
   setupSettingsLogic();
   setupStatsFilter();
+  setupRenameModal();
   renderAll();
   registerServiceWorker();
+
+  // Przy pierwszym starcie (gdy domyślna nazwa i brak wpisów) pozwól od razu nazwać auto
+  const firstVeh = appData.vehicles[0];
+  if (!appData.settings.firstLaunchPrompted && firstVeh && firstVeh.name === 'Mój Samochód' && appData.entries.length === 0) {
+    appData.settings.firstLaunchPrompted = true;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+    openRenameModal(firstVeh.id);
+  }
 });
 
 function loadData() {
-  const saved = localStorage.getItem(STORAGE_KEY);
+  // Migracja z v1 jeśli istnieje
+  const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('fuel_calc_win_db_v1');
   if (saved) {
     try {
       const parsed = JSON.parse(saved);
-      appData = { ...appData, ...parsed };
+      appData = {
+        ...appData,
+        ...parsed,
+        settings: { ...appData.settings, ...(parsed.settings || {}) }
+      };
       if (!appData.vehicles || appData.vehicles.length === 0) {
-        appData.vehicles = [{ id: 'v1', name: 'Mój Samochód', serviceOdo: 0 }];
+        appData.vehicles = [{ id: 'v1', name: 'Mój Samochód', serviceOdo: 0, tuvDate: '', taxDate: '' }];
+      } else {
+        appData.vehicles = appData.vehicles.map(v => ({
+          serviceOdo: 0,
+          tuvDate: '',
+          taxDate: '',
+          ...v
+        }));
       }
     } catch (e) {
       console.error('Błąd odczytu bazy:', e);
@@ -57,6 +80,53 @@ function setStatus(text) {
 function applyTheme(themeName) {
   document.body.className = themeName;
   document.getElementById('sel-theme').value = themeName;
+}
+
+// ================= OKNO ZMIANY NAZWY POJAZDU =================
+function setupRenameModal() {
+  document.getElementById('btn-rename-active-vehicle').addEventListener('click', () => {
+    openRenameModal(appData.settings.activeVehicleId);
+  });
+
+  document.getElementById('btn-inline-rename').addEventListener('click', () => {
+    openRenameModal(appData.settings.activeVehicleId);
+  });
+
+  document.getElementById('btn-modal-save').addEventListener('click', () => {
+    const newName = document.getElementById('modal-vehicle-input').value.trim();
+    if (newName && renamingVehicleId) {
+      const veh = appData.vehicles.find(v => v.id === renamingVehicleId);
+      if (veh) {
+        veh.name = newName;
+        saveData('Zmieniono nazwę pojazdu na: ' + newName);
+      }
+    }
+    closeRenameModal();
+  });
+
+  document.getElementById('btn-modal-cancel').addEventListener('click', closeRenameModal);
+
+  document.getElementById('modal-vehicle-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      document.getElementById('btn-modal-save').click();
+    }
+  });
+}
+
+window.openRenameModal = function(vehicleId) {
+  const veh = appData.vehicles.find(v => v.id === vehicleId);
+  if (!veh) return;
+  renamingVehicleId = vehicleId;
+  const inp = document.getElementById('modal-vehicle-input');
+  inp.value = veh.name === 'Mój Samochód' ? '' : veh.name;
+  document.getElementById('rename-modal').style.display = 'flex';
+  setTimeout(() => inp.focus(), 50);
+};
+
+function closeRenameModal() {
+  document.getElementById('rename-modal').style.display = 'none';
+  renamingVehicleId = null;
 }
 
 // ================= NAWIGACJA ZAKŁADEK =================
@@ -321,7 +391,6 @@ function renderAll() {
 
 function renderVehicleSelectors() {
   const select = document.getElementById('active-vehicle-select');
-  const box = document.getElementById('vehicle-switcher-box');
   select.innerHTML = '';
 
   appData.vehicles.forEach(v => {
@@ -332,13 +401,14 @@ function renderVehicleSelectors() {
     select.appendChild(opt);
   });
 
-  box.style.display = appData.vehicles.length > 1 ? 'block' : 'none';
-
   const activeVeh = appData.vehicles.find(v => v.id === appData.settings.activeVehicleId) || appData.vehicles[0];
   document.getElementById('home-vehicle-name').textContent = activeVeh.name;
   document.getElementById('srv-veh-name').textContent = activeVeh.name;
   document.getElementById('inp-service-odo').value = activeVeh.serviceOdo || '';
+  document.getElementById('inp-tuv-date').value = activeVeh.tuvDate || '';
+  document.getElementById('inp-tax-date').value = activeVeh.taxDate || '';
 
+  // Lista pojazdów w ustawieniach (z opcją edycji nazwy każdego auta!)
   const vList = document.getElementById('vehicles-list');
   vList.innerHTML = '';
   appData.vehicles.forEach(v => {
@@ -346,12 +416,45 @@ function renderVehicleSelectors() {
     row.className = 'veh-item';
     row.innerHTML = `
       <span>🚗 <strong>${v.name}</strong></span>
-      <div>
-        ${appData.vehicles.length > 1 ? `<button class="win-btn-sm" onclick="deleteVehicle('${v.id}')">Usuń</button>` : ''}
+      <div class="veh-actions">
+        <button type="button" class="win-btn-sm" onclick="openRenameModal('${v.id}')">✏️ Zmień nazwę</button>
+        ${appData.vehicles.length > 1 ? `<button type="button" class="win-btn-sm" onclick="deleteVehicle('${v.id}')">Usuń</button>` : ''}
       </div>
     `;
     vList.appendChild(row);
   });
+}
+
+function formatDateBadge(dateStr, label, boxId, textId) {
+  const box = document.getElementById(boxId);
+  const txt = document.getElementById(textId);
+  if (!dateStr) {
+    box.style.display = 'none';
+    return false;
+  }
+
+  const target = new Date(dateStr + 'T00:00:00');
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const diffDays = Math.round((target - today) / (1000 * 60 * 60 * 24));
+
+  const parts = dateStr.split('-');
+  const plDate = `${parts[2]}.${parts[1]}.${parts[0]}`;
+
+  box.style.display = 'block';
+  box.classList.remove('alert-info', 'alert-warn', 'overdue');
+
+  if (diffDays < 0) {
+    box.classList.add('overdue');
+    txt.textContent = `${label}: ${plDate} (${Math.abs(diffDays)} dni po!)`;
+  } else if (diffDays <= 30) {
+    box.classList.add('alert-warn');
+    txt.textContent = `${label}: ${plDate} (za ${diffDays} dni)`;
+  } else {
+    box.classList.add('alert-info');
+    txt.textContent = `${label}: ${plDate} (za ${diffDays} dni)`;
+  }
+  return true;
 }
 
 function renderHome() {
@@ -394,6 +497,7 @@ function renderHome() {
   updateCost100Preview('PLN', 'kpi-cost-pln', 'zł', avgCons, computed);
   updateCost100Preview('EUR', 'kpi-cost-eur', '€', avgCons, computed);
 
+  // Przypomnienie o wymianie oleju
   const activeVeh = appData.vehicles.find(v => v.id === vId);
   const srvBar = document.getElementById('service-alert-bar');
   if (activeVeh && activeVeh.serviceOdo > 0 && lastOdo > 0) {
@@ -401,7 +505,7 @@ function renderHome() {
     srvBar.style.display = 'block';
     if (left >= 0) {
       srvBar.classList.remove('overdue');
-      document.getElementById('service-alert-text').textContent = `Do serwisu / oleju pozostało: ${left.toFixed(0)} km (przy ${activeVeh.serviceOdo} km)`;
+      document.getElementById('service-alert-text').textContent = `Do wymiany oleju: ${left.toFixed(0)} km (przy ${activeVeh.serviceOdo} km)`;
     } else {
       srvBar.classList.add('overdue');
       document.getElementById('service-alert-text').textContent = `PRZEKROCZONO SERWIS o ${Math.abs(left).toFixed(0)} km!`;
@@ -410,6 +514,18 @@ function renderHome() {
     srvBar.style.display = 'none';
   }
 
+  // Terminy: Przegląd techniczny (TÜV) + Podatek Kfz-Steuer obok siebie
+  const hasTuv = activeVeh ? formatDateBadge(activeVeh.tuvDate, 'Przegląd', 'tuv-alert-box', 'tuv-alert-text') : false;
+  const hasTax = activeVeh ? formatDateBadge(activeVeh.taxDate, 'Kfz-Steuer', 'tax-alert-box', 'tax-alert-text') : false;
+  const datesGrid = document.getElementById('dates-alert-grid');
+  if (hasTuv || hasTax) {
+    datesGrid.style.display = 'grid';
+    datesGrid.style.gridTemplateColumns = (hasTuv && hasTax) ? '1fr 1fr' : '1fr';
+  } else {
+    datesGrid.style.display = 'none';
+  }
+
+  // Tabela historii
   const tbody = document.getElementById('history-tbody');
   tbody.innerHTML = '';
   document.getElementById('history-count').textContent = computed.length;
@@ -547,18 +663,22 @@ function setupSettingsLogic() {
     const name = inp.value.trim();
     if (!name) return;
     const newId = 'v_' + Date.now();
-    appData.vehicles.push({ id: newId, name, serviceOdo: 0 });
+    appData.vehicles.push({ id: newId, name, serviceOdo: 0, tuvDate: '', taxDate: '' });
     appData.settings.activeVehicleId = newId;
     inp.value = '';
     saveData('Dodano pojazd: ' + name);
   });
 
   document.getElementById('btn-save-service').addEventListener('click', () => {
-    const val = parseInt(document.getElementById('inp-service-odo').value, 10) || 0;
+    const valOdo = parseInt(document.getElementById('inp-service-odo').value, 10) || 0;
+    const valTuv = document.getElementById('inp-tuv-date').value || '';
+    const valTax = document.getElementById('inp-tax-date').value || '';
     const veh = appData.vehicles.find(v => v.id === appData.settings.activeVehicleId);
     if (veh) {
-      veh.serviceOdo = val;
-      saveData('Zapisano licznik serwisu');
+      veh.serviceOdo = valOdo;
+      veh.tuvDate = valTuv;
+      veh.taxDate = valTax;
+      saveData('Zapisano terminy serwisu, przeglądu i Kfz-Steuer');
     }
   });
 
