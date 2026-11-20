@@ -1,0 +1,686 @@
+/* ================= ZMIENNE BAZOWE I 8 MOTYWÓW ================= */
+:root {
+  --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --radius: 4px;
+}
+
+/* 1. Windows Vista Aero */
+body.theme-vista {
+  --bg-desktop: #1b4f8c;
+  --bg-window: #f0f4f9;
+  --bg-panel: #ffffff;
+  --title-bg: linear-gradient(180deg, #5994ce 0%, #245edb 50%, #1941a5 51%, #3b77d3 100%);
+  --title-txt: #ffffff;
+  --toolbar-bg: linear-gradient(180deg, #f8fbff 0%, #dce7f5 100%);
+  --border-col: #8ba8c7;
+  --text-main: #111111;
+  --text-muted: #556677;
+  --accent-bg: linear-gradient(180deg, #6db3f2 0%, #3690f0 50%, #1e69de 51%, #54a3ee 100%);
+  --accent-txt: #ffffff;
+  --btn-bg: linear-gradient(180deg, #ffffff 0%, #e5ecf5 50%, #cfdceb 51%, #e8eff7 100%);
+  --btn-txt: #111111;
+  --status-bg: #dce6f2;
+  --table-head: #d9e6f6;
+  --table-alt: #f4f8fc;
+}
+
+/* 2. Windows XP Luna */
+body.theme-xp {
+  --bg-desktop: #3a6ea5;
+  --bg-window: #ece9d8;
+  --bg-panel: #ffffff;
+  --title-bg: linear-gradient(180deg, #0997ff 0%, #0053ee 40%, #0050ee 88%, #06f 100%);
+  --title-txt: #ffffff;
+  --toolbar-bg: linear-gradient(180deg, #f7f5ea 0%, #e2decb 100%);
+  --border-col: #aca899;
+  --text-main: #000000;
+  --text-muted: #555555;
+  --accent-bg: linear-gradient(180deg, #58b847 0%, #2e9421 50%, #248218 51%, #43ad35 100%);
+  --accent-txt: #ffffff;
+  --btn-bg: linear-gradient(180deg, #ffffff 0%, #ece9d8 100%);
+  --btn-txt: #000000;
+  --status-bg: #e2decb;
+  --table-head: #dcd8c4;
+  --table-alt: #f7f5ec;
+}
+
+/* 3. Windows 98 Classic */
+body.theme-win98 {
+  --radius: 0px;
+  --bg-desktop: #008080;
+  --bg-window: #c0c0c0;
+  --bg-panel: #ffffff;
+  --title-bg: linear-gradient(90deg, #000080 0%, #1084d0 100%);
+  --title-txt: #ffffff;
+  --toolbar-bg: #c0c0c0;
+  --border-col: #808080;
+  --text-main: #000000;
+  --text-muted: #404040;
+  --accent-bg: #000080;
+  --accent-txt: #ffffff;
+  --btn-bg: #c0c0c0;
+  --btn-txt: #000000;
+  --status-bg: #c0c0c0;
+  --table-head: #c0c0c0;
+  --table-alt: #efefef;
+}
+
+/* 4. Windows 7 Aero */
+body.theme-win7 {
+  --bg-desktop: #2c629b;
+  --bg-window: #eef3fa;
+  --bg-panel: #ffffff;
+  --title-bg: linear-gradient(180deg, #b8d6f5 0%, #73a9e0 50%, #5291d1 51%, #8ec0f2 100%);
+  --title-txt: #0b2545;
+  --toolbar-bg: linear-gradient(180deg, #fcfdff 0%, #e1ebf7 100%);
+  --border-col: #a3bddb;
+  --text-main: #1b2430;
+  --text-muted: #5a6b80;
+  --accent-bg: linear-gradient(180deg, #7bc3ff 0%, #2d8ceb 50%, #1a73cf 51%, #57abff 100%);
+  --accent-txt: #ffffff;
+  --btn-bg: linear-gradient(180deg, #f9fcff 0%, #e1eaf5 50%, #d2dfef 51%, #eaf1fa 100%);
+  --btn-txt: #1b2430;
+  --status-bg: #e1ebf7;
+  --table-head: #dbe7f5;
+  --table-alt: #f5f9fe;
+}
+
+/* 5. Windows XP Zune */
+body.theme-zune {
+  --bg-desktop: #1a1a1a;
+  --bg-window: #e6e6e6;
+  --bg-panel: #ffffff;
+  --title-bg: linear-gradient(180deg, #4b4b4b 0%, #1f1f1f 50%, #111111 51%, #2c2c2c 100%);
+  --title-txt: #ff7b00;
+  --toolbar-bg: linear-gradient(180deg, #f2f2f2 0%, #d6d6d6 100%);
+  --border-col: #999999;
+  --text-main: #111111;
+  --text-muted: #555555;
+  --accent-bg: linear-gradient(180deg, #ff9d3b 0%, #e66400 50%, #cc5500 51%, #f2791d 100%);
+  --accent-txt: #ffffff;
+  --btn-bg: linear-gradient(180deg, #ffffff 0%, #dcdcdc 100%);
+  --btn-txt: #111111;
+  --status-bg: #d4d4d4;
+  --table-head: #d6d6d6;
+  --table-alt: #f5f5f5;
+}
+
+/* 6. Windows XP Royale Noir */
+body.theme-royale {
+  --bg-desktop: #0e131a;
+  --bg-window: #e4e8ee;
+  --bg-panel: #ffffff;
+  --title-bg: linear-gradient(180deg, #3a4759 0%, #161d26 50%, #0b0f14 51%, #1f2936 100%);
+  --title-txt: #7ab8ff;
+  --toolbar-bg: linear-gradient(180deg, #f0f3f7 0%, #cfd7e3 100%);
+  --border-col: #8a99ad;
+  --text-main: #10151c;
+  --text-muted: #4b586b;
+  --accent-bg: linear-gradient(180deg, #4885c7 0%, #1e528c 50%, #143c69 51%, #2f69a8 100%);
+  --accent-txt: #ffffff;
+  --btn-bg: linear-gradient(180deg, #ffffff 0%, #d5dde8 100%);
+  --btn-txt: #10151c;
+  --status-bg: #cfd7e3;
+  --table-head: #cfd7e3;
+  --table-alt: #f2f5f9;
+}
+
+/* 7. Vista Dark Glass (Nocny) */
+body.theme-dark {
+  --bg-desktop: #0b0e14;
+  --bg-window: #181d26;
+  --bg-panel: #222936;
+  --title-bg: linear-gradient(180deg, #33415c 0%, #1b2436 50%, #111724 51%, #243047 100%);
+  --title-txt: #e2e8f0;
+  --toolbar-bg: #1e2430;
+  --border-col: #3b475e;
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --accent-bg: linear-gradient(180deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 51%, #3b82f6 100%);
+  --accent-txt: #ffffff;
+  --btn-bg: linear-gradient(180deg, #333d4f 0%, #232b38 100%);
+  --btn-txt: #f1f5f9;
+  --status-bg: #131720;
+  --table-head: #2b3445;
+  --table-alt: #1d232e;
+}
+
+/* 8. Terminal Retro (Matrix) */
+body.theme-matrix {
+  --radius: 0px;
+  --font-main: 'Courier New', Courier, monospace;
+  --bg-desktop: #000000;
+  --bg-window: #071207;
+  --bg-panel: #0c1f0c;
+  --title-bg: #003b00;
+  --title-txt: #39ff14;
+  --toolbar-bg: #0a1a0a;
+  --border-col: #1f7a1f;
+  --text-main: #39ff14;
+  --text-muted: #22a80b;
+  --accent-bg: #196619;
+  --accent-txt: #ffffff;
+  --btn-bg: #0e260e;
+  --btn-txt: #39ff14;
+  --status-bg: #050f05;
+  --table-head: #113311;
+  --table-alt: #091809;
+}
+
+/* ================= UKŁAD OKNA I KOMPONENTY ================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-main);
+  background: var(--bg-desktop);
+  color: var(--text-main);
+  font-size: 14px;
+  line-height: 1.35;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+.window-container {
+  width: 100%;
+  max-width: 640px;
+  min-height: 100vh;
+  background: var(--bg-window);
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--border-col);
+  border-right: 1px solid var(--border-col);
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+/* Pasek tytułu */
+.title-bar {
+  background: var(--title-bg);
+  color: var(--title-txt);
+  padding: 8px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-col);
+  user-select: none;
+}
+
+.title-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: bold;
+  font-size: 15px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+.win-select-sm {
+  padding: 3px 6px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-col);
+  background: var(--bg-panel);
+  color: var(--text-main);
+  font-weight: bold;
+  font-size: 13px;
+}
+
+/* Belka narzędzi */
+.toolbar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: var(--toolbar-bg);
+  border-bottom: 1px solid var(--border-col);
+  padding: 4px;
+  gap: 4px;
+}
+
+.tool-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  padding: 6px 4px;
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+}
+
+.tool-btn .btn-ico {
+  font-size: 17px;
+}
+
+.tool-btn.active {
+  background: var(--btn-bg);
+  border: 1px solid var(--border-col);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.15);
+}
+
+/* Obszar roboczy */
+.window-body {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Klasyczny GroupBox */
+.win-groupbox {
+  border: 1px solid var(--border-col);
+  border-radius: var(--radius);
+  background: var(--bg-panel);
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.win-groupbox legend {
+  padding: 0 6px;
+  font-weight: bold;
+  font-size: 12px;
+  color: var(--text-main);
+  background: var(--bg-window);
+  border: 1px solid var(--border-col);
+  border-radius: var(--radius);
+}
+
+/* KPI na pulpicie */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.kpi-box {
+  background: var(--bg-window);
+  border: 1px solid var(--border-col);
+  border-radius: var(--radius);
+  padding: 8px;
+  text-align: center;
+}
+
+.kpi-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.kpi-value {
+  font-size: 22px;
+  font-weight: bold;
+  margin: 2px 0;
+}
+
+.kpi-value small {
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.kpi-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.cost-strip {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  padding: 6px 8px;
+  background: var(--bg-window);
+  border: 1px solid var(--border-col);
+  border-radius: var(--radius);
+}
+
+.service-bar {
+  margin-top: 8px;
+  padding: 6px 8px;
+  background: #fff3cd;
+  color: #664d03;
+  border: 1px solid #ffecb5;
+  border-radius: var(--radius);
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.service-bar.overdue {
+  background: #f8d7da;
+  color: #842029;
+  border-color: #f5c2c7;
+}
+
+/* Przyciski Windows */
+.win-btn, .win-btn-primary, .win-btn-danger, .win-btn-sm {
+  font-family: inherit;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-col);
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.win-btn {
+  background: var(--btn-bg);
+  color: var(--btn-txt);
+  padding: 10px 14px;
+  font-size: 14px;
+}
+
+.win-btn-primary {
+  background: var(--accent-bg);
+  color: var(--accent-txt);
+  padding: 11px 16px;
+  font-size: 15px;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.4);
+}
+
+.win-btn-danger {
+  background: linear-gradient(180deg, #f26d6d 0%, #c92a2a 100%);
+  color: #ffffff;
+  padding: 10px 14px;
+  font-size: 14px;
+}
+
+.win-btn-sm {
+  background: var(--btn-bg);
+  color: var(--btn-txt);
+  padding: 5px 8px;
+  font-size: 12px;
+}
+
+.win-btn-sm.active {
+  background: var(--accent-bg);
+  color: var(--accent-txt);
+}
+
+.big-action-btn {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 13px;
+  font-size: 16px;
+}
+
+/* Tabela historii */
+.table-wrapper {
+  overflow-x: auto;
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+.win-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.win-table th {
+  background: var(--table-head);
+  color: var(--text-main);
+  text-align: left;
+  padding: 6px 5px;
+  border-bottom: 1px solid var(--border-col);
+  position: sticky;
+  top: 0;
+}
+
+.win-table td {
+  padding: 8px 5px;
+  border-bottom: 1px solid var(--border-col);
+  cursor: pointer;
+}
+
+.win-table tr:nth-child(even) {
+  background: var(--table-alt);
+}
+
+/* Formularze */
+.form-row {
+  margin-bottom: 10px;
+}
+
+.form-row label {
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.two-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.win-input {
+  width: 100%;
+  padding: 10px 8px;
+  font-size: 16px;
+  font-family: inherit;
+  border: 1px solid var(--border-col);
+  border-radius: var(--radius);
+  background: var(--bg-panel);
+  color: var(--text-main);
+}
+
+.field-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+.segmented-control {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--border-col);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.seg-btn {
+  padding: 10px 6px;
+  border: none;
+  background: var(--btn-bg);
+  color: var(--btn-txt);
+  font-family: inherit;
+  font-weight: bold;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.seg-btn.active {
+  background: var(--accent-bg);
+  color: var(--accent-txt);
+}
+
+.win-checkbox {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px !important;
+  padding: 6px 0;
+  cursor: pointer;
+}
+
+.win-checkbox input {
+  width: 20px;
+  height: 20px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.form-actions button:first-child {
+  flex: 2;
+}
+
+/* Statystyki */
+.filter-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.stats-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.stat-card {
+  background: var(--bg-window);
+  border: 1px solid var(--border-col);
+  border-radius: var(--radius);
+  padding: 8px 4px;
+  text-align: center;
+}
+
+.stat-card span {
+  display: block;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.stat-card strong {
+  font-size: 17px;
+}
+
+.txt-green { color: #198754; }
+.txt-red { color: #dc3545; }
+
+.stats-summary-lines {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border-col);
+}
+
+.currency-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.curr-box {
+  background: var(--bg-window);
+  border: 1px solid var(--border-col);
+  border-radius: var(--radius);
+  padding: 8px;
+  font-size: 12px;
+}
+
+.curr-title {
+  font-weight: bold;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--border-col);
+  padding-bottom: 2px;
+}
+
+/* Wykres słupkowy */
+.retro-chart-container {
+  height: 150px;
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  padding: 18px 4px 4px 4px;
+  border-bottom: 1px solid var(--border-col);
+}
+
+.chart-bar-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.chart-bar-val {
+  font-size: 10px;
+  margin-bottom: 2px;
+  font-weight: bold;
+}
+
+.chart-bar {
+  width: 100%;
+  background: var(--accent-bg);
+  border: 1px solid var(--border-col);
+  min-height: 6px;
+}
+
+.chart-bar-lbl {
+  font-size: 9px;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+.empty-msg {
+  width: 100%;
+  text-align: center;
+  color: var(--text-muted);
+  align-self: center;
+}
+
+/* Ustawienia pojazdów i kopii */
+.vehicles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.veh-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 8px;
+  background: var(--bg-window);
+  border: 1px solid var(--border-col);
+  border-radius: var(--radius);
+}
+
+.add-vehicle-row {
+  display: flex;
+  gap: 6px;
+}
+
+.backup-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.file-upload-label {
+  text-align: center;
+  display: block;
+}
+
+/* Pasek statusu */
+.status-bar {
+  background: var(--status-bg);
+  border-top: 1px solid var(--border-col);
+  padding: 4px 10px;
+  font-size: 11px;
+  color: var(--text-muted);
+  display: flex;
+  justify-content: space-between;
+}

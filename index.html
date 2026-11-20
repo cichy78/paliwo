@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#1e5799">
+  <title>Kalkulator Paliwa</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-vista">
+
+  <div class="window-container">
+    <!-- PASEK TYTUŁU OKNA -->
+    <header class="title-bar">
+      <div class="title-left">
+        <span class="app-icon">⛽</span>
+        <span class="app-title">Kalkulator Paliwa v1.0</span>
+      </div>
+      <div class="title-right" id="vehicle-switcher-box" style="display:none;">
+        <select id="active-vehicle-select" class="win-select-sm" title="Wybierz pojazd"></select>
+      </div>
+    </header>
+
+    <!-- GÓRNA BELKA NARZĘDZI (ZAKŁADKI) -->
+    <nav class="toolbar">
+      <button class="tool-btn active" data-tab="tab-home">
+        <span class="btn-ico">📋</span>
+        <span>Pulpit</span>
+      </button>
+      <button class="tool-btn" data-tab="tab-add" id="nav-add-btn">
+        <span class="btn-ico">➕</span>
+        <span>Wpis</span>
+      </button>
+      <button class="tool-btn" data-tab="tab-stats">
+        <span class="btn-ico">📊</span>
+        <span>Statystyki</span>
+      </button>
+      <button class="tool-btn" data-tab="tab-settings">
+        <span class="btn-ico">⚙️</span>
+        <span>Opcje</span>
+      </button>
+    </nav>
+
+    <!-- OBSZAR ROBOCZY -->
+    <main class="window-body">
+
+      <!-- ==================== 1. PULPIT ==================== -->
+      <section id="tab-home" class="tab-content active">
+        
+        <fieldset class="win-groupbox">
+          <legend>Podsumowanie spalania (<span id="home-vehicle-name">Pojazd</span>)</legend>
+          <div class="kpi-grid">
+            <div class="kpi-box">
+              <div class="kpi-label">Ostatnie spalanie</div>
+              <div class="kpi-value" id="kpi-last-consumption">--,-- <small>l/100</small></div>
+              <div class="kpi-sub" id="kpi-trend">Brak danych</div>
+            </div>
+            <div class="kpi-box">
+              <div class="kpi-label">Średnie spalanie</div>
+              <div class="kpi-value" id="kpi-avg-consumption">--,-- <small>l/100</small></div>
+              <div class="kpi-sub" id="kpi-total-dist">0 km łącznie</div>
+            </div>
+          </div>
+
+          <div class="cost-strip">
+            <div><strong>Koszt 100 km (PLN):</strong> <span id="kpi-cost-pln">--</span></div>
+            <div><strong>Koszt 100 km (EUR):</strong> <span id="kpi-cost-eur">--</span></div>
+          </div>
+
+          <div id="service-alert-bar" class="service-bar" style="display:none;">
+            🔧 <span id="service-alert-text">Do wymiany oleju: 0 km</span>
+          </div>
+        </fieldset>
+
+        <button class="win-btn-primary big-action-btn" id="btn-quick-add">
+          ⛽ + DODAJ TANKOWANIE
+        </button>
+
+        <fieldset class="win-groupbox list-groupbox">
+          <legend>Historia tankowań (<span id="history-count">0</span>)</legend>
+          <div class="table-wrapper">
+            <table class="win-table" id="history-table">
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Litry</th>
+                  <th>Dystans</th>
+                  <th>l/100</th>
+                  <th>Kwota</th>
+                </tr>
+              </thead>
+              <tbody id="history-tbody">
+              </tbody>
+            </table>
+          </div>
+        </fieldset>
+      </section>
+
+      <!-- ==================== 2. NOWY / EDYCJA WPISU ==================== -->
+      <section id="tab-add" class="tab-content">
+        <fieldset class="win-groupbox">
+          <legend id="form-legend">Nowe tankowanie</legend>
+          <form id="fuel-form">
+            <input type="hidden" id="edit-entry-id" value="">
+
+            <div class="form-row">
+              <label>Tryb przebiegu:</label>
+              <div class="segmented-control">
+                <button type="button" class="seg-btn active" data-mode="ODO" id="mode-odo">Licznik (ODO)</button>
+                <button type="button" class="seg-btn" data-mode="TRIP" id="mode-trip">Dzienny (Trip)</button>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <label for="inp-distance" id="lbl-distance">Stan licznika (km):</label>
+              <input type="number" step="0.1" inputmode="decimal" id="inp-distance" class="win-input" placeholder="np. 145320" required>
+              <div class="field-hint" id="distance-hint">Poprzedni stan: brak</div>
+            </div>
+
+            <div class="form-row two-cols">
+              <div>
+                <label for="inp-liters">Ilość paliwa (l):</label>
+                <input type="number" step="0.01" inputmode="decimal" id="inp-liters" class="win-input" placeholder="np. 42.50" required>
+              </div>
+              <div>
+                <label>Waluta:</label>
+                <div class="segmented-control">
+                  <button type="button" class="seg-btn active" data-curr="PLN" id="curr-pln">PLN</button>
+                  <button type="button" class="seg-btn" data-curr="EUR" id="curr-eur">EUR</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row two-cols">
+              <div>
+                <label for="inp-price">Cena za litr:</label>
+                <input type="number" step="0.001" inputmode="decimal" id="inp-price" class="win-input" placeholder="np. 6.49">
+              </div>
+              <div>
+                <label for="inp-total">Kwota całkowita:</label>
+                <input type="number" step="0.01" inputmode="decimal" id="inp-total" class="win-input" placeholder="np. 275.83">
+              </div>
+            </div>
+
+            <div class="form-row checkbox-row">
+              <label class="win-checkbox">
+                <input type="checkbox" id="inp-full" checked>
+                <span>Tankowanie do pełna (odbicie pistoletu)</span>
+              </label>
+            </div>
+
+            <div class="form-row two-cols">
+              <div>
+                <label for="inp-date">Data:</label>
+                <input type="date" id="inp-date" class="win-input" required>
+              </div>
+              <div>
+                <label for="inp-route">Tryb trasy:</label>
+                <select id="inp-route" class="win-input">
+                  <option value="Mieszany">Mieszany</option>
+                  <option value="Trasa">Trasa / Autostrada</option>
+                  <option value="Miasto">Miasto</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <label for="inp-note">Stacja / Notatka (opcjonalnie):</label>
+              <input type="text" id="inp-note" class="win-input" placeholder="np. Orlen, Aral, z przyczepą...">
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="win-btn-primary">💾 Zapisz wpis</button>
+              <button type="button" class="win-btn" id="btn-cancel-form">Anuluj</button>
+              <button type="button" class="win-btn-danger" id="btn-delete-entry" style="display:none;">🗑️ Usuń</button>
+            </div>
+          </form>
+        </fieldset>
+      </section>
+
+      <!-- ==================== 3. STATYSTYKI ==================== -->
+      <section id="tab-stats" class="tab-content">
+        <div class="filter-bar">
+          <button class="win-btn-sm active" data-period="ALL">Wszystko</button>
+          <button class="win-btn-sm" data-period="YEAR">Ten rok</button>
+          <button class="win-btn-sm" data-period="3M">3 mies.</button>
+          <button class="win-btn-sm" data-period="MONTH">Ten mies.</button>
+        </div>
+
+        <fieldset class="win-groupbox">
+          <legend>Zużycie paliwa (l/100 km)</legend>
+          <div class="stats-grid-3">
+            <div class="stat-card">
+              <span>Średnie</span>
+              <strong id="st-avg">--</strong>
+            </div>
+            <div class="stat-card">
+              <span>Minimum</span>
+              <strong id="st-min" class="txt-green">--</strong>
+            </div>
+            <div class="stat-card">
+              <span>Maksimum</span>
+              <strong id="st-max" class="txt-red">--</strong>
+            </div>
+          </div>
+          <div class="stats-summary-lines">
+            <div>Przejechany dystans: <strong id="st-dist">0 km</strong></div>
+            <div>Zatankowane paliwo: <strong id="st-liters">0.00 l</strong></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="win-groupbox">
+          <legend>Podsumowanie wydatków (PLN / EUR)</legend>
+          <div class="currency-stats-grid">
+            <div class="curr-box">
+              <div class="curr-title">🇵🇱 Złotówki (PLN)</div>
+              <div>Wydano: <strong id="st-pln-sum">0.00 zł</strong></div>
+              <div>Śr. cena/l: <strong id="st-pln-price">--</strong></div>
+              <div>Koszt 100 km: <strong id="st-pln-100">--</strong></div>
+            </div>
+            <div class="curr-box">
+              <div class="curr-title">🇪🇺 Euro (EUR)</div>
+              <div>Wydano: <strong id="st-eur-sum">0.00 €</strong></div>
+              <div>Śr. cena/l: <strong id="st-eur-price">--</strong></div>
+              <div>Koszt 100 km: <strong id="st-eur-100">--</strong></div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="win-groupbox">
+          <legend>Wykres ostatnich 10 pełnych tankowań</legend>
+          <div id="retro-chart" class="retro-chart-container">
+            <div class="empty-msg">Za mało danych do wykresu</div>
+          </div>
+        </fieldset>
+      </section>
+
+      <!-- ==================== 4. USTAWIENIA I KOPIA ==================== -->
+      <section id="tab-settings" class="tab-content">
+        
+        <fieldset class="win-groupbox">
+          <legend>Wygląd i Styl Systemu (8 motywów)</legend>
+          <div class="form-row">
+            <label for="sel-theme">Wybierz styl interfejsu:</label>
+            <select id="sel-theme" class="win-input">
+              <option value="theme-vista">1. Windows Vista Aero (Szklany błękit)</option>
+              <option value="theme-xp">2. Windows XP Luna (Niebiesko-zielony)</option>
+              <option value="theme-win98">3. Windows 98 Classic (Klasyczny szary)</option>
+              <option value="theme-win7">4. Windows 7 Aero (Jasny lód)</option>
+              <option value="theme-zune">5. Windows XP Zune (Czarno-pomarańczowy)</option>
+              <option value="theme-royale">6. Windows XP Royale Noir (Ciemny granat)</option>
+              <option value="theme-dark">7. Vista Dark Glass (Nocny na stację)</option>
+              <option value="theme-matrix">8. Terminal Retro (Czarno-zielony)</option>
+            </select>
+          </div>
+        </fieldset>
+
+        <fieldset class="win-groupbox">
+          <legend>Zarządzanie pojazdami</legend>
+          <div id="vehicles-list" class="vehicles-list"></div>
+          <div class="add-vehicle-row">
+            <input type="text" id="new-vehicle-name" class="win-input" placeholder="Nazwa nowego auta (np. VW T-Roc)">
+            <button type="button" class="win-btn" id="btn-add-vehicle">+ Dodaj</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="win-groupbox">
+          <legend>Serwis i wymiana oleju (<span id="srv-veh-name">Pojazd</span>)</legend>
+          <div class="form-row two-cols">
+            <div>
+              <label for="inp-service-odo">Następny serwis przy (km):</label>
+              <input type="number" id="inp-service-odo" class="win-input" placeholder="np. 155000">
+            </div>
+            <div style="display:flex; align-items:flex-end;">
+              <button type="button" class="win-btn" id="btn-save-service" style="width:100%;">Ustaw licznik</button>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="win-groupbox">
+          <legend>Domyślne ustawienia formularza</legend>
+          <div class="form-row two-cols">
+            <div>
+              <label for="def-mode">Domyślny przebieg:</label>
+              <select id="def-mode" class="win-input">
+                <option value="ODO">Licznik całkowity (ODO)</option>
+                <option value="TRIP">Przebieg dzienny (Trip)</option>
+              </select>
+            </div>
+            <div>
+              <label for="def-curr">Domyślna waluta:</label>
+              <select id="def-curr" class="win-input">
+                <option value="PLN">PLN (zł)</option>
+                <option value="EUR">EUR (€)</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="win-groupbox">
+          <legend>Kopia zapasowa i Eksport (Offline / APK)</legend>
+          <div class="backup-buttons">
+            <button type="button" class="win-btn" id="btn-export-json">💾 Eksportuj bazę (JSON)</button>
+            <button type="button" class="win-btn" id="btn-export-csv">📊 Eksportuj do Excela (CSV)</button>
+            <label class="win-btn file-upload-label">
+              📂 Importuj bazę (JSON)
+              <input type="file" id="inp-import-json" accept=".json" style="display:none;">
+            </label>
+          </div>
+        </fieldset>
+
+      </section>
+
+    </main>
+
+    <!-- DOLNY PASEK STANU (STATUS BAR) -->
+    <footer class="status-bar">
+      <span id="status-text">Gotowy | Baza lokalna OK</span>
+      <span id="status-odo">ODO: 0 km</span>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
