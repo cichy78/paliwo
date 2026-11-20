@@ -1,29 +1,32 @@
-/* ================= ZMIENNE BAZOWE I 8 MOTYWÓW (ZAOKRĄGLONE) ================= */
+/* ================= ZMIENNE BAZOWE I 8 MOTYWÓW AERO GLASS ================= */
 :root {
   --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  --radius: 12px;
-  --radius-sm: 8px;
+  --radius-card: 18px;
+  --radius-box: 14px;
   --radius-pill: 999px;
 }
 
-/* 1. Windows Vista Aero */
+/* 1. Windows Vista Aero (Dokładnie jak na wizualizacji) */
 body.theme-vista {
   --bg-desktop: #1b4f8c;
-  --bg-window: #eef3f9;
+  --bg-window: linear-gradient(180deg, #dce8f5 0%, #eef3f8 100%);
   --bg-panel: #ffffff;
-  --title-bg: linear-gradient(180deg, #5994ce 0%, #245edb 50%, #1941a5 51%, #3b77d3 100%);
+  --title-bg: linear-gradient(180deg, #4b89c8 0%, #1d5ba3 52%, #154785 53%, #2f72be 100%);
   --title-txt: #ffffff;
-  --toolbar-bg: linear-gradient(180deg, #f8fbff 0%, #dce7f5 100%);
-  --border-col: #96b2d0;
-  --text-main: #111111;
-  --text-muted: #556677;
-  --accent-bg: linear-gradient(180deg, #6db3f2 0%, #3690f0 50%, #1e69de 51%, #54a3ee 100%);
+  --toolbar-bg: linear-gradient(180deg, #f3f7fc 0%, #cddced 100%);
+  --border-col: #9db7d4;
+  --text-main: #18222f;
+  --text-muted: #526477;
+  --kpi-left-bg: linear-gradient(145deg, #d8eff5 0%, #f8fbfd 55%, #fde8d7 100%);
+  --kpi-right-bg: linear-gradient(145deg, #daf0e8 0%, #f8fbfd 55%, #fde4d0 100%);
+  --accent-bg: linear-gradient(180deg, #74b8f7 0%, #2b7de0 50%, #1a63c4 51%, #4da1f2 100%);
+  --accent-border: #1754a8;
   --accent-txt: #ffffff;
-  --btn-bg: linear-gradient(180deg, #ffffff 0%, #e5ecf5 50%, #cfdceb 51%, #e8eff7 100%);
-  --btn-txt: #111111;
-  --status-bg: #dce6f2;
-  --table-head: #d9e6f6;
-  --table-alt: #f4f8fc;
+  --btn-bg: linear-gradient(180deg, #ffffff 0%, #e4edf7 50%, #cddcee 51%, #eaf1fa 100%);
+  --btn-txt: #18222f;
+  --status-bg: #d9e5f3;
+  --table-head: linear-gradient(180deg, #eef4fb 0%, #dbe7f5 100%);
+  --table-alt: #f3f7fc;
 }
 
 /* 2. Windows XP Luna */
@@ -31,26 +34,29 @@ body.theme-xp {
   --bg-desktop: #3a6ea5;
   --bg-window: #ece9d8;
   --bg-panel: #ffffff;
-  --title-bg: linear-gradient(180deg, #0997ff 0%, #0053ee 40%, #0050ee 88%, #06f 100%);
+  --title-bg: linear-gradient(180deg, #0997ff 0%, #0053ee 45%, #0050ee 88%, #06f 100%);
   --title-txt: #ffffff;
   --toolbar-bg: linear-gradient(180deg, #f7f5ea 0%, #e2decb 100%);
   --border-col: #aca899;
-  --text-main: #000000;
+  --text-main: #111111;
   --text-muted: #555555;
-  --accent-bg: linear-gradient(180deg, #58b847 0%, #2e9421 50%, #248218 51%, #43ad35 100%);
+  --kpi-left-bg: linear-gradient(145deg, #e7f3ff 0%, #ffffff 60%, #f4f9e8 100%);
+  --kpi-right-bg: linear-gradient(145deg, #e8f7e4 0%, #ffffff 60%, #fff4e2 100%);
+  --accent-bg: linear-gradient(180deg, #65c754 0%, #2e9421 50%, #248218 51%, #49b53a 100%);
+  --accent-border: #1d6b13;
   --accent-txt: #ffffff;
   --btn-bg: linear-gradient(180deg, #ffffff 0%, #ece9d8 100%);
-  --btn-txt: #000000;
+  --btn-txt: #111111;
   --status-bg: #e2decb;
   --table-head: #dcd8c4;
   --table-alt: #f7f5ec;
 }
 
-/* 3. Windows 98 Classic (zachowuje lekki retro sznyt) */
+/* 3. Windows 98 Classic */
 body.theme-win98 {
-  --radius: 4px;
-  --radius-sm: 2px;
-  --radius-pill: 4px;
+  --radius-card: 6px;
+  --radius-box: 4px;
+  --radius-pill: 6px;
   --bg-desktop: #008080;
   --bg-window: #c0c0c0;
   --bg-panel: #ffffff;
@@ -60,7 +66,10 @@ body.theme-win98 {
   --border-col: #808080;
   --text-main: #000000;
   --text-muted: #404040;
+  --kpi-left-bg: #f4f4f4;
+  --kpi-right-bg: #f4f4f4;
   --accent-bg: #000080;
+  --accent-border: #000050;
   --accent-txt: #ffffff;
   --btn-bg: #c0c0c0;
   --btn-txt: #000000;
@@ -80,7 +89,10 @@ body.theme-win7 {
   --border-col: #a3bddb;
   --text-main: #1b2430;
   --text-muted: #5a6b80;
+  --kpi-left-bg: linear-gradient(145deg, #e3f2fd 0%, #ffffff 100%);
+  --kpi-right-bg: linear-gradient(145deg, #e8f5e9 0%, #ffffff 100%);
   --accent-bg: linear-gradient(180deg, #7bc3ff 0%, #2d8ceb 50%, #1a73cf 51%, #57abff 100%);
+  --accent-border: #1660ad;
   --accent-txt: #ffffff;
   --btn-bg: linear-gradient(180deg, #f9fcff 0%, #e1eaf5 50%, #d2dfef 51%, #eaf1fa 100%);
   --btn-txt: #1b2430;
@@ -100,7 +112,10 @@ body.theme-zune {
   --border-col: #999999;
   --text-main: #111111;
   --text-muted: #555555;
+  --kpi-left-bg: linear-gradient(145deg, #f2f2f2 0%, #ffffff 60%, #ffe8d4 100%);
+  --kpi-right-bg: linear-gradient(145deg, #f2f2f2 0%, #ffffff 60%, #ffe8d4 100%);
   --accent-bg: linear-gradient(180deg, #ff9d3b 0%, #e66400 50%, #cc5500 51%, #f2791d 100%);
+  --accent-border: #a84600;
   --accent-txt: #ffffff;
   --btn-bg: linear-gradient(180deg, #ffffff 0%, #dcdcdc 100%);
   --btn-txt: #111111;
@@ -120,7 +135,10 @@ body.theme-royale {
   --border-col: #8a99ad;
   --text-main: #10151c;
   --text-muted: #4b586b;
+  --kpi-left-bg: linear-gradient(145deg, #e6eef8 0%, #ffffff 100%);
+  --kpi-right-bg: linear-gradient(145deg, #e6eef8 0%, #ffffff 100%);
   --accent-bg: linear-gradient(180deg, #4885c7 0%, #1e528c 50%, #143c69 51%, #2f69a8 100%);
+  --accent-border: #0f2e52;
   --accent-txt: #ffffff;
   --btn-bg: linear-gradient(180deg, #ffffff 0%, #d5dde8 100%);
   --btn-txt: #10151c;
@@ -132,15 +150,18 @@ body.theme-royale {
 /* 7. Vista Dark Glass (Nocny) */
 body.theme-dark {
   --bg-desktop: #0b0e14;
-  --bg-window: #181d26;
-  --bg-panel: #222936;
+  --bg-window: #161b24;
+  --bg-panel: #202734;
   --title-bg: linear-gradient(180deg, #33415c 0%, #1b2436 50%, #111724 51%, #243047 100%);
   --title-txt: #e2e8f0;
-  --toolbar-bg: #1e2430;
+  --toolbar-bg: #1c222e;
   --border-col: #3b475e;
   --text-main: #f1f5f9;
   --text-muted: #94a3b8;
+  --kpi-left-bg: linear-gradient(145deg, #1e293b 0%, #263142 100%);
+  --kpi-right-bg: linear-gradient(145deg, #1e293b 0%, #263142 100%);
   --accent-bg: linear-gradient(180deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 51%, #3b82f6 100%);
+  --accent-border: #1e40af;
   --accent-txt: #ffffff;
   --btn-bg: linear-gradient(180deg, #333d4f 0%, #232b38 100%);
   --btn-txt: #f1f5f9;
@@ -151,9 +172,9 @@ body.theme-dark {
 
 /* 8. Terminal Retro (Matrix) */
 body.theme-matrix {
-  --radius: 6px;
-  --radius-sm: 4px;
-  --radius-pill: 8px;
+  --radius-card: 10px;
+  --radius-box: 8px;
+  --radius-pill: 10px;
   --font-main: 'Courier New', Courier, monospace;
   --bg-desktop: #000000;
   --bg-window: #071207;
@@ -164,7 +185,10 @@ body.theme-matrix {
   --border-col: #1f7a1f;
   --text-main: #39ff14;
   --text-muted: #22a80b;
+  --kpi-left-bg: #0e240e;
+  --kpi-right-bg: #0e240e;
   --accent-bg: #196619;
+  --accent-border: #39ff14;
   --accent-txt: #ffffff;
   --btn-bg: #0e260e;
   --btn-txt: #39ff14;
@@ -194,21 +218,19 @@ body {
 
 .window-container {
   width: 100%;
-  max-width: 640px;
+  max-width: 600px;
   min-height: 100vh;
   background: var(--bg-window);
   display: flex;
   flex-direction: column;
-  border-left: 1px solid var(--border-col);
-  border-right: 1px solid var(--border-col);
-  box-shadow: 0 0 24px rgba(0,0,0,0.45);
+  box-shadow: 0 0 28px rgba(0,0,0,0.45);
 }
 
-/* Pasek tytułu */
+/* Pasek tytułu Aero Glass */
 .title-bar {
   background: var(--title-bg);
   color: var(--title-txt);
-  padding: 9px 12px;
+  padding: 12px 14px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -222,8 +244,8 @@ body {
   align-items: center;
   gap: 6px;
   font-weight: bold;
-  font-size: 15px;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  font-size: 18px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.45);
   white-space: nowrap;
 }
 
@@ -233,8 +255,8 @@ body {
   background: var(--bg-panel);
   border: 1px solid var(--border-col);
   border-radius: var(--radius-pill);
-  padding: 2px 6px 2px 10px;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.15);
+  padding: 4px 10px 4px 14px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.8);
 }
 
 .win-select-pill {
@@ -242,7 +264,7 @@ body {
   background: transparent;
   color: var(--text-main);
   font-weight: bold;
-  font-size: 13px;
+  font-size: 14px;
   font-family: inherit;
   outline: none;
   max-width: 145px;
@@ -252,52 +274,58 @@ body {
   border: none;
   background: transparent;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 14px;
   padding: 2px 4px;
-  margin-left: 2px;
+  margin-left: 4px;
 }
 
-/* Belka narzędzi */
+/* Belka narzędzi (4 ikony jak w oknie Windows) */
 .toolbar {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   background: var(--toolbar-bg);
   border-bottom: 1px solid var(--border-col);
-  padding: 6px;
+  padding: 6px 8px;
   gap: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
 .tool-btn {
   background: transparent;
   border: 1px solid transparent;
-  border-radius: var(--radius);
+  border-radius: var(--radius-box);
   padding: 6px 4px;
   color: var(--text-main);
   font-family: inherit;
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 600;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .tool-btn .btn-ico {
-  font-size: 17px;
+  font-size: 19px;
 }
 
 .tool-btn.active {
-  background: var(--btn-bg);
+  background: linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(173,210,245,0.65) 50%, rgba(130,185,238,0.75) 100%);
   border: 1px solid var(--border-col);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  box-shadow: inset 0 1px 0 #ffffff, 0 1px 3px rgba(0,0,0,0.15);
+}
+
+body.theme-dark .tool-btn.active,
+body.theme-matrix .tool-btn.active {
+  background: var(--btn-bg);
 }
 
 /* Obszar roboczy */
 .window-body {
   flex: 1;
-  padding: 10px;
+  padding: 12px;
   overflow-y: auto;
 }
 
@@ -309,131 +337,177 @@ body {
   display: block;
 }
 
-/* Zaokrąglony GroupBox */
-.win-groupbox {
-  border: 1px solid var(--border-col);
-  border-radius: var(--radius);
+/* Główna zaokrąglona karta Aero */
+.aero-card {
   background: var(--bg-panel);
+  border: 1px solid var(--border-col);
+  border-radius: var(--radius-card);
   padding: 12px;
   margin-bottom: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.07);
 }
 
-.win-groupbox legend {
-  padding: 2px 10px;
-  font-weight: bold;
-  font-size: 12px;
+.card-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.card-header-row h3 {
+  font-size: 16px;
+  font-weight: 600;
   color: var(--text-main);
+}
+
+.veh-badge {
+  font-size: 11px;
+  font-weight: bold;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
   background: var(--bg-window);
   border: 1px solid var(--border-col);
-  border-radius: var(--radius-pill);
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+  color: var(--text-muted);
 }
 
-.inline-edit-btn {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  font-size: 12px;
-  padding: 0 2px;
-}
-
-/* KPI na pulpicie */
+/* Dwa duże kafelki KPI (Ostatnie spalanie / Średnie spalanie) */
 .kpi-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.kpi-box {
+  border: 1px solid var(--border-col);
+  border-radius: var(--radius-box);
+  padding: 12px 8px;
+  text-align: center;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.85), 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.kpi-left {
+  background: var(--kpi-left-bg);
+}
+
+.kpi-right {
+  background: var(--kpi-right-bg);
+}
+
+.kpi-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.kpi-value {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.05;
+  margin: 4px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.kpi-value small {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.1;
+  text-align: left;
+}
+
+.kpi-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* Zaokrąglone pigułki pod kafelkami KPI */
+.pill-strip {
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-col);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 8px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.cost-pill {
+  background: linear-gradient(180deg, #ffffff 0%, #eef3f9 100%);
+  color: var(--text-main);
+}
+
+body.theme-dark .cost-pill,
+body.theme-matrix .cost-pill {
+  background: var(--bg-window);
+}
+
+.alert-amber {
+  background: linear-gradient(180deg, #fff6cf 0%, #f5cd67 100%);
+  color: #3d2c00;
+  border-color: #d6a73a;
+}
+
+.alert-blue-amber {
+  background: linear-gradient(90deg, #b8d8f8 0%, #e7eef5 48%, #f8cf76 100%);
+  color: #1a2430;
+  border-color: #9bb8d6;
+}
+
+.alert-warn {
+  background: linear-gradient(180deg, #fff3cd 0%, #ffd970 100%);
+  color: #5c4300;
+  border-color: #e0b034;
+}
+
+.overdue {
+  background: linear-gradient(180deg, #f8d7da 0%, #ea99a1 100%);
+  color: #6b111a;
+  border-color: #c95b66;
+}
+
+.dates-alert-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
   margin-bottom: 8px;
 }
 
-.kpi-box {
-  background: var(--bg-window);
-  border: 1px solid var(--border-col);
-  border-radius: var(--radius);
-  padding: 10px 8px;
-  text-align: center;
-}
-
-.kpi-label {
-  font-size: 11px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-}
-
-.kpi-value {
-  font-size: 23px;
-  font-weight: bold;
-  margin: 2px 0;
-}
-
-.kpi-value small {
-  font-size: 12px;
-  font-weight: normal;
-}
-
-.kpi-sub {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-.cost-strip {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  padding: 7px 12px;
-  background: var(--bg-window);
-  border: 1px solid var(--border-col);
-  border-radius: var(--radius-pill);
-}
-
-/* Paski alertów (olej, przegląd, Kfz-Steuer) */
-.alert-pill {
-  margin-top: 8px;
-  padding: 7px 12px;
-  background: #fff3cd;
-  color: #664d03;
-  border: 1px solid #ffe69c;
-  border-radius: var(--radius-pill);
-  font-size: 12px;
-  font-weight: bold;
-  text-align: center;
-}
-
-.alert-pill.alert-info {
-  background: #e7f1ff;
-  color: #084298;
-  border-color: #b6d4fe;
-}
-
-.alert-pill.alert-warn {
-  background: #fff3cd;
-  color: #664d03;
-  border-color: #ffe69c;
-}
-
-.alert-pill.overdue {
-  background: #f8d7da;
-  color: #842029;
-  border-color: #f5c2c7;
-}
-
-.dates-alert-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-  margin-top: 8px;
-}
-
-.dates-alert-grid .alert-pill {
-  margin-top: 0;
-  padding: 7px 8px;
+.dates-alert-grid .pill-strip {
+  margin-bottom: 0;
+  padding: 8px 8px;
   font-size: 11.5px;
 }
 
-/* Przyciski Windows zaokrąglone */
-.win-btn, .win-btn-primary, .win-btn-danger, .win-btn-sm {
+/* Szklany przycisk 3D Aero (+ DODAJ TANKOWANIE) */
+.aero-glossy-btn {
+  font-family: inherit;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--accent-border);
+  background: var(--accent-bg);
+  color: var(--accent-txt);
+  padding: 12px 18px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.45);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.75), 0 3px 8px rgba(0,0,0,0.22);
+}
+
+.big-action-btn {
+  width: 100%;
+  margin-top: 4px;
+  padding: 14px;
+  font-size: 16px;
+}
+
+.win-btn, .win-btn-danger, .win-btn-sm {
   font-family: inherit;
   border-radius: var(--radius-pill);
   border: 1px solid var(--border-col);
@@ -446,15 +520,6 @@ body {
   color: var(--btn-txt);
   padding: 10px 16px;
   font-size: 14px;
-}
-
-.win-btn-primary {
-  background: var(--accent-bg);
-  color: var(--accent-txt);
-  padding: 11px 18px;
-  font-size: 15px;
-  text-shadow: 0 1px 1px rgba(0,0,0,0.4);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 .win-btn-danger {
@@ -476,19 +541,12 @@ body {
   color: var(--accent-txt);
 }
 
-.big-action-btn {
-  width: 100%;
-  margin-bottom: 12px;
-  padding: 13px;
-  font-size: 16px;
-}
-
-/* Tabela historii */
+/* Tabela historii w karcie */
 .table-wrapper {
   overflow-x: auto;
   max-height: 340px;
   overflow-y: auto;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-box);
   border: 1px solid var(--border-col);
 }
 
@@ -502,14 +560,20 @@ body {
   background: var(--table-head);
   color: var(--text-main);
   text-align: left;
-  padding: 7px 6px;
+  padding: 8px 6px;
   border-bottom: 1px solid var(--border-col);
   position: sticky;
   top: 0;
+  line-height: 1.15;
+}
+
+.win-table th small {
+  font-weight: normal;
+  color: var(--text-muted);
 }
 
 .win-table td {
-  padding: 8px 6px;
+  padding: 9px 6px;
   border-bottom: 1px solid var(--border-col);
   cursor: pointer;
 }
@@ -542,7 +606,7 @@ body {
   font-size: 16px;
   font-family: inherit;
   border: 1px solid var(--border-col);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-box);
   background: var(--bg-panel);
   color: var(--text-main);
 }
@@ -605,7 +669,7 @@ body {
 .filter-bar {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 5px;
+  gap: 6px;
   margin-bottom: 10px;
 }
 
@@ -619,7 +683,7 @@ body {
 .stat-card {
   background: var(--bg-window);
   border: 1px solid var(--border-col);
-  border-radius: var(--radius);
+  border-radius: var(--radius-box);
   padding: 8px 4px;
   text-align: center;
 }
@@ -654,7 +718,7 @@ body {
 .curr-box {
   background: var(--bg-window);
   border: 1px solid var(--border-col);
-  border-radius: var(--radius);
+  border-radius: var(--radius-box);
   padding: 8px;
   font-size: 12px;
 }
@@ -695,7 +759,7 @@ body {
   width: 100%;
   background: var(--accent-bg);
   border: 1px solid var(--border-col);
-  border-radius: 6px 6px 0 0;
+  border-radius: 8px 8px 0 0;
   min-height: 6px;
 }
 
@@ -727,7 +791,7 @@ body {
   padding: 8px 10px;
   background: var(--bg-window);
   border: 1px solid var(--border-col);
-  border-radius: var(--radius);
+  border-radius: var(--radius-box);
 }
 
 .veh-actions {
@@ -777,11 +841,11 @@ body {
 .modal-window {
   width: 100%;
   max-width: 400px;
-  background: var(--bg-window);
+  background: var(--bg-panel);
   border: 1px solid var(--border-col);
-  border-radius: var(--radius);
+  border-radius: var(--radius-card);
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.5);
 }
 
 .modal-body {

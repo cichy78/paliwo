@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'fuel_calc_win_db_v2';
+const STORAGE_KEY = 'fuel_calc_win_db_v3';
 
 let appData = {
   settings: {
@@ -31,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
   renderAll();
   registerServiceWorker();
 
-  // Przy pierwszym starcie (gdy domyślna nazwa i brak wpisów) pozwól od razu nazwać auto
   const firstVeh = appData.vehicles[0];
   if (!appData.settings.firstLaunchPrompted && firstVeh && firstVeh.name === 'Mój Samochód' && appData.entries.length === 0) {
     appData.settings.firstLaunchPrompted = true;
@@ -41,8 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function loadData() {
-  // Migracja z v1 jeśli istnieje
-  const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('fuel_calc_win_db_v1');
+  const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('fuel_calc_win_db_v2') || localStorage.getItem('fuel_calc_win_db_v1');
   if (saved) {
     try {
       const parsed = JSON.parse(saved);
@@ -85,10 +83,6 @@ function applyTheme(themeName) {
 // ================= OKNO ZMIANY NAZWY POJAZDU =================
 function setupRenameModal() {
   document.getElementById('btn-rename-active-vehicle').addEventListener('click', () => {
-    openRenameModal(appData.settings.activeVehicleId);
-  });
-
-  document.getElementById('btn-inline-rename').addEventListener('click', () => {
     openRenameModal(appData.settings.activeVehicleId);
   });
 
@@ -408,7 +402,6 @@ function renderVehicleSelectors() {
   document.getElementById('inp-tuv-date').value = activeVeh.tuvDate || '';
   document.getElementById('inp-tax-date').value = activeVeh.taxDate || '';
 
-  // Lista pojazdów w ustawieniach (z opcją edycji nazwy każdego auta!)
   const vList = document.getElementById('vehicles-list');
   vList.innerHTML = '';
   appData.vehicles.forEach(v => {
@@ -417,7 +410,7 @@ function renderVehicleSelectors() {
     row.innerHTML = `
       <span>🚗 <strong>${v.name}</strong></span>
       <div class="veh-actions">
-        <button type="button" class="win-btn-sm" onclick="openRenameModal('${v.id}')">✏️ Zmień nazwę</button>
+        <button type="button" class="win-btn-sm" onclick="openRenameModal('${v.id}')">✏️ Zmień</button>
         ${appData.vehicles.length > 1 ? `<button type="button" class="win-btn-sm" onclick="deleteVehicle('${v.id}')">Usuń</button>` : ''}
       </div>
     `;
@@ -442,7 +435,7 @@ function formatDateBadge(dateStr, label, boxId, textId) {
   const plDate = `${parts[2]}.${parts[1]}.${parts[0]}`;
 
   box.style.display = 'block';
-  box.classList.remove('alert-info', 'alert-warn', 'overdue');
+  box.classList.remove('alert-blue-amber', 'alert-warn', 'overdue');
 
   if (diffDays < 0) {
     box.classList.add('overdue');
@@ -451,7 +444,7 @@ function formatDateBadge(dateStr, label, boxId, textId) {
     box.classList.add('alert-warn');
     txt.textContent = `${label}: ${plDate} (za ${diffDays} dni)`;
   } else {
-    box.classList.add('alert-info');
+    box.classList.add('alert-blue-amber');
     txt.textContent = `${label}: ${plDate} (za ${diffDays} dni)`;
   }
   return true;
@@ -472,32 +465,32 @@ function renderHome() {
     avgCons = totalDistForFull > 0 ? +(fullEntries.reduce((s, e) => s + e.consumption, 0) / fullEntries.length).toFixed(2) : 0;
 
     const lastCons = fullEntries[fullEntries.length - 1].consumption;
-    lastEl.innerHTML = `${lastCons.toFixed(2)} <small>l/100</small>`;
-    avgEl.innerHTML = `${avgCons.toFixed(2)} <small>l/100</small>`;
+    lastEl.innerHTML = `${lastCons.toFixed(2).replace('.', ',')} <small>l/100<br>km</small>`;
+    avgEl.innerHTML = `${avgCons.toFixed(2).replace('.', ',')} <small>l/100<br>km</small>`;
 
     const diff = +(lastCons - avgCons).toFixed(2);
     if (diff < 0) {
-      trendEl.innerHTML = `<span class="txt-green">▼ ${Math.abs(diff)} mniej niż średnia</span>`;
+      trendEl.innerHTML = `<span class="txt-green">▼ ${Math.abs(diff).toFixed(2).replace('.', ',')} mniej</span>`;
     } else if (diff > 0) {
-      trendEl.innerHTML = `<span class="txt-red">▲ +${diff} więcej niż średnia</span>`;
+      trendEl.innerHTML = `<span class="txt-red">▲ +${diff.toFixed(2).replace('.', ',')} więcej</span>`;
     } else {
       trendEl.textContent = 'Równo ze średnią';
     }
   } else {
-    lastEl.innerHTML = `--,-- <small>l/100</small>`;
-    avgEl.innerHTML = `--,-- <small>l/100</small>`;
-    trendEl.textContent = 'Wymaga min. 2 pełnych tankowań';
+    lastEl.innerHTML = `--,-- <small>l/100<br>km</small>`;
+    avgEl.innerHTML = `--,-- <small>l/100<br>km</small>`;
+    trendEl.textContent = 'Min. 2 pełne tankowania';
   }
 
   const lastOdo = computed.length > 0 ? computed[computed.length - 1].odo : 0;
   const totalDist = computed.reduce((s, e) => s + (e.calcDist || 0), 0);
-  document.getElementById('kpi-total-dist').textContent = `${totalDist.toFixed(0)} km (ODO: ${lastOdo})`;
+  document.getElementById('kpi-total-dist').textContent = `${totalDist.toFixed(0)} km łącznie`;
   document.getElementById('status-odo').textContent = `ODO: ${lastOdo} km`;
 
-  updateCost100Preview('PLN', 'kpi-cost-pln', 'zł', avgCons, computed);
-  updateCost100Preview('EUR', 'kpi-cost-eur', '€', avgCons, computed);
+  updateCost100Preview('PLN', 'kpi-cost-pln', 'PLN', avgCons, computed);
+  updateCost100Preview('EUR', 'kpi-cost-eur', 'EUR', avgCons, computed);
 
-  // Przypomnienie o wymianie oleju
+  // Pasek wymiany oleju
   const activeVeh = appData.vehicles.find(v => v.id === vId);
   const srvBar = document.getElementById('service-alert-bar');
   if (activeVeh && activeVeh.serviceOdo > 0 && lastOdo > 0) {
@@ -514,7 +507,7 @@ function renderHome() {
     srvBar.style.display = 'none';
   }
 
-  // Terminy: Przegląd techniczny (TÜV) + Podatek Kfz-Steuer obok siebie
+  // Dwa terminy obok siebie: Przegląd techniczny (TÜV) + Podatek Kfz-Steuer
   const hasTuv = activeVeh ? formatDateBadge(activeVeh.tuvDate, 'Przegląd', 'tuv-alert-box', 'tuv-alert-text') : false;
   const hasTax = activeVeh ? formatDateBadge(activeVeh.taxDate, 'Kfz-Steuer', 'tax-alert-box', 'tax-alert-text') : false;
   const datesGrid = document.getElementById('dates-alert-grid');
@@ -525,7 +518,7 @@ function renderHome() {
     datesGrid.style.display = 'none';
   }
 
-  // Tabela historii
+  // Tabela historii (kolumny zgodne z wizualizacją: Data | Przebieg km | Ilość l | l/100 | Koszt)
   const tbody = document.getElementById('history-tbody');
   tbody.innerHTML = '';
   document.getElementById('history-count').textContent = computed.length;
@@ -533,13 +526,14 @@ function renderHome() {
   [...computed].reverse().forEach(e => {
     const tr = document.createElement('tr');
     const sym = e.currency === 'EUR' ? '€' : 'zł';
-    const consTxt = e.consumption !== null ? `<strong>${e.consumption.toFixed(2)}</strong>` : (e.isFull ? 'Start' : 'Część.');
+    const shortDate = e.date ? `${e.date.slice(8,10)}.${e.date.slice(5,7)}` : '';
+    const consTxt = e.consumption !== null ? `<strong>${e.consumption.toFixed(2).replace('.', ',')}</strong>` : (e.isFull ? 'Start' : 'Część.');
     tr.innerHTML = `
-      <td>${e.date}<br><small style="color:var(--text-muted)">${e.route || ''}</small></td>
-      <td>${e.liters.toFixed(2)} l ${e.isFull ? '🟢' : '🟡'}</td>
-      <td>${e.calcDist > 0 ? '+' + e.calcDist + ' km' : e.odo + ' km'}</td>
+      <td>${shortDate}<br><small style="color:var(--text-muted)">${e.date.slice(0,4)}</small></td>
+      <td>${e.calcDist > 0 ? e.calcDist + ' km' : e.odo + ' km'}</td>
+      <td>${e.liters.toFixed(1).replace('.', ',')} l ${e.isFull ? '🟢' : '🟡'}</td>
       <td>${consTxt}</td>
-      <td>${e.totalCost > 0 ? e.totalCost.toFixed(2) + ' ' + sym : '-'}</td>
+      <td>${e.totalCost > 0 ? e.totalCost.toFixed(2).replace('.', ',') + ' ' + sym : '-'}</td>
     `;
     tr.addEventListener('click', () => openEditForm(e.id));
     tbody.appendChild(tr);
@@ -551,9 +545,9 @@ function updateCost100Preview(curr, elId, symbol, avgCons, entries) {
   const el = document.getElementById(elId);
   if (priced.length > 0 && avgCons > 0) {
     const avgPrice = priced.reduce((s, e) => s + e.pricePerLiter, 0) / priced.length;
-    el.textContent = `${(avgCons * avgPrice).toFixed(2)} ${symbol}`;
+    el.textContent = `${(avgCons * avgPrice).toFixed(2).replace('.', ',')} ${symbol}`;
   } else {
-    el.textContent = '--';
+    el.textContent = `-- ${symbol}`;
   }
 }
 
@@ -593,9 +587,9 @@ function renderStats() {
   if (fulls.length > 0) {
     const vals = fulls.map(e => e.consumption);
     avgCons = +(vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(2);
-    document.getElementById('st-avg').textContent = avgCons.toFixed(2);
-    document.getElementById('st-min').textContent = Math.min(...vals).toFixed(2);
-    document.getElementById('st-max').textContent = Math.max(...vals).toFixed(2);
+    document.getElementById('st-avg').textContent = avgCons.toFixed(2).replace('.', ',');
+    document.getElementById('st-min').textContent = Math.min(...vals).toFixed(2).replace('.', ',');
+    document.getElementById('st-max').textContent = Math.max(...vals).toFixed(2).replace('.', ',');
   } else {
     document.getElementById('st-avg').textContent = '--';
     document.getElementById('st-min').textContent = '--';
